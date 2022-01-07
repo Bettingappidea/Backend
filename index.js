@@ -19,6 +19,11 @@ app.use(express.urlencoded({ extended: true }));
 const user = require("./Routes/users");
 app.use("/users", user);
 
+const secretKey = process.env.App_jwtPrivateKey;
+if (!secretKey) {
+  console.log("Fatal Error, Secret key does not exist");
+  process.exit(1);
+}
 const port = process.env.PORT || 4000;
 
 app.get("/", function (req, res) {
