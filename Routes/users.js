@@ -5,17 +5,25 @@ const User = require("../Models/userModel");
 const jwt = require("jsonwebtoken");
 const authenticate = require("../Middleware/authentication");
 
-router.get("/", authenticate, async (req, res) => {
+router.get("/", async (req, res) => {
+  res.send("Please enter a valid route");
+});
+router.get("/usernames", async (req, res) => {
   const user = await User.find();
-  res.send(user);
+  res.send(user.map((elem) => elem.username));
 });
 
-router.post("/", async (req, res) => {
-  const user = await User.findOne({ username: req.body.username });
+router.get("/emails", async (req, res) => {
+  const user = await User.find();
+  res.send(user.map((elem) => elem.email));
+});
+
+router.post("/login", async (req, res) => {
+  const user = await User.findOne({ email: req.body.email });
   if (!user)
     return res
       .status(400)
-      .send(`User with given username ${req.body.username} does not exist`);
+      .send(`User with given username ${req.body.email} does not exist`);
   if (user.password != req.body.password)
     return res.status(400).send(`Incorrect username password combination`);
   const token = user.generateAuthToken();
