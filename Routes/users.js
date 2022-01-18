@@ -5,8 +5,11 @@ const User = require("../Models/userModel");
 const jwt = require("jsonwebtoken");
 const authenticate = require("../Middleware/authentication");
 
-router.get("/", async (req, res) => {
-  res.send("Please enter a valid route");
+router.get("/details", authenticate, async (req, res) => {
+  const name = req.jwtData.username;
+  const user = await User.findOne({ username: name });
+  if (!user) res.status(401).send("teree ma di");
+  return res.send(user);
 });
 router.get("/usernames", async (req, res) => {
   const user = await User.find();
