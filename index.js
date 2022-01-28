@@ -18,6 +18,22 @@ db.once("open", () => console.log("Database connected"));
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
+app.use(function (req, res, next) {
+  const allowedOrigins = [
+    "http://localhost:3000",
+    "https://surfsup-808c9.web.app",
+  ];
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+  // res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 
 const user = require("./Routes/users");
 app.use("/users", user);
