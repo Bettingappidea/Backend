@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(function (req, res, next) {
   const allowedOrigins = [
     "http://localhost:3000",
-    "https://surfsup-808c9.web.app",
+    "https://gazebo-9bbd1.web.app",
   ];
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
